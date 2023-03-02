@@ -7,8 +7,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { registerRoute } from "../utils/APIRoutes";
 import ipLocation from "iplocation";
-import "../regiser.css"
-import { Brush, Headset } from 'react-bootstrap-icons';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -24,8 +22,6 @@ export default function Register() {
     email: "",
     phone_number: "",
   });
-
-  const [isOpen,setIsOpen] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
@@ -110,90 +106,105 @@ export default function Register() {
     }
   };
 
-  const openChat = ()=>{
-    setIsOpen(!isOpen)
-  }
-
   return (
-//     <>
-//       <div className={`floating-chat ${!isOpen ? "enter": "expand"}`}  >
-//           <button onClick={openChat} className="chat-button">
-//           <i className={`fa fa-comments ${!isOpen ? " ": "hidden"}`} aria-hidden="true" ></i>
-//           </button>
-        
-//     <div className={`chat ${!isOpen ? " ": "enter"}`} >
-//         <div className="header">
-//             <span className="title">
-//                 what's on your mind?
-//             </span>
-//             <div onClick={openChat}>
-//                 <i className="fa fa-times" aria-hidden="true"></i>
-//             </div>
-                         
-//         </div>
-//         <ul className="messages">
-//             <li className="other">asdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdas</li>
-//             <li className="other">Are we dogs??? 🐶</li>
-//             <li className="self">no... we're human</li>
-//             <li className="other">are you sure???</li>
-//             <li className="self">yes.... -___-</li>
-//             <li className="other">if we're not dogs.... we might be monkeys 🐵</li>
-//             <li className="self">i hate you</li>
-//             <li className="other">don't be so negative! here's a banana 🍌</li>
-//             <li className="self">......... -___-</li>
-//         </ul>
-//         <div className="footer">
-//             <div className="text-box" ></div>
-//             <button id="sendMessage">send</button>
-//         </div>
-//     </div>
-// </div>
-
-
-      
-//     </>
-
-
-<>
-<div className={`floating-chat ${!isOpen ? "enter": "expand"}`}  >
-    <button onClick={openChat} className="chat-button">
-    <i className={`fa fa-comments ${!isOpen ? " ": "hidden"}`} aria-hidden="true" ></i>
-    </button>
-  
-<div className={`chat ${!isOpen ? " ": "enter"}`} >
-  <div className="header">
-      <span className="title">
-          what's on your mind?
-      </span>
-      <div onClick={openChat}>
-          <i className="fa fa-times" aria-hidden="true"></i>
-      </div>
-
-      
-
-
-  </div>
-  <form className="chat-form">
-        <input />
-        <input />
-        <input />
-
-        <button>start</button>
-
-
-      </form>
-
-</div>
-</div>
-
-
-
-</>
-
-
-
-
-
-
+    <>
+      <FormContainer>
+        <form action="" onSubmit={(event) => handleSubmit(event)}>
+          <div className="brand">
+            <img src={Logo} alt="logo" />
+            <h1>Live Support</h1>
+          </div>
+          <input
+            type="text"
+            placeholder="Name"
+            name="name"
+            onChange={(e) => handleChange(e)}
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            name="email"
+            onChange={(e) => handleChange(e)}
+          />
+          <input
+            type="text"
+            placeholder="Phone Number"
+            name="phone_number"
+            onChange={(e) => handleChange(e)}
+          />
+          <button type="submit">Login</button>
+        </form>
+      </FormContainer>
+      <ToastContainer />
+    </>
   );
 }
+
+const FormContainer = styled.div`
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  align-items: center;
+  background-color: #fff;
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+    img {
+      height: 5rem;
+    }
+    h1 {
+      color: red;
+      text-transform: uppercase;
+    }
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: #f0e8e0;
+    border-radius: 2rem;
+    padding: 3rem 5rem;
+  }
+  input {
+    background-color: transparent;
+    padding: 1rem;
+    border: 0.1rem solid #000;
+    border-radius: 0.4rem;
+    color: white;
+    width: 100%;
+    font-size: 1rem;
+    &:focus {
+      border: 0.1rem solid red;
+      outline: none;
+    }
+  }
+  button {
+    background-color: #000;
+    color: white;
+    padding: 1rem 2rem;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 0.4rem;
+    font-size: 1rem;
+    text-transform: uppercase;
+    &:hover {
+      background-color: red;
+    }
+  }
+  span {
+    color: #000;
+    text-transform: uppercase;
+    a {
+      color: red;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  }
+`;
