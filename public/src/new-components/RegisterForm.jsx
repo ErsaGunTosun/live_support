@@ -1,8 +1,8 @@
 import React from 'react'
 
-function ChatRegister(props) {
+function RegisterForm(props) {
   return (
-    <form className="chat-form" autoComplete="off">
+    <form className="chat-form" autoComplete="off" onSubmit={(event) => props.submitFunc(event)}>
 
       <div className="mb-2">
         <label htmlFor="inputName" className="form-label mb-0">Name & Surname</label>
@@ -20,7 +20,7 @@ function ChatRegister(props) {
       </div>
 
       <div className="text-center mt-5">
-        <button type="button" id="start-btn" className="btn start-btn">Start</button>
+        <button type="submit" id="start-btn" className="btn start-btn">Start</button>
         <div id="start-btn" className="form-text">Our conversations are recorded</div>
       </div>
 
@@ -28,4 +28,4 @@ function ChatRegister(props) {
   )
 }
 
-export default ChatRegister
+export default RegisterForm

@@ -10,6 +10,7 @@ require("dotenv").config();
 app.use(cors());
 app.use(express.json());
 
+mongoose.set('strictQuery', false);
 mongoose
   .connect(process.env.MONGOURL, {
     useNewUrlParser: true,
@@ -35,11 +36,21 @@ const io = socket(server, {
   },
 });
 
+// Global Variables
 global.onlineUsers = new Map();
+global.messagebox = new Map();
+
 io.on("connection", (socket) => {
   global.chatSocket = socket;
   socket.on("add-user", (userId) => {
     onlineUsers.set(userId, socket.id);
+  });
+
+  socket.on("login-box", (userId,box) => {
+    if(!onlineUsers.get(userId)){
+      onlineUsers.set(userId, socket.id)
+    }
+    messagebox.set(box._id,box);
   });
 
   socket.on("send-msg", (data) => {

@@ -18,60 +18,85 @@ module.exports.login = async (req, res, next) => {
 };
 
 module.exports.register = async (req, res, next) => {
-  
-  const {name,email,phone_number,ip,location,lang,langs,platform,userAgent} = req.body;
-  const UserCheck = await User.find({phone_number});
-
+  console.log("user data req");
+  const { name, email, phone_number, ip, location, lang, langs, platform, userAgent } = req.body;
+  const UserCheck = await User.find({ phone_number });
   const time_value = Date.now();
   const time = new Date(time_value);
 
-  if(UserCheck.length > 0){
-      let user = UserCheck[0];
-      
-      if(user.name !== name){
-          user.names.push({name:user.name,change_time:time})
-          user.name = name
-      }
+  if (UserCheck.length > 0) {
+    let user = UserCheck[0];
+    console.log(user)
+    if (user.name !== name) {
+      user.names.push({ name: user.name, change_time: time })
+      user.name = name
+    }
 
-      if(user.email !== email){
-          user.emails.push({email:user.email,change_time:time})
-          user.email = email
-      }
-      
-      if(user.ip !== ip){
-          user.ip_list.push({ip:old_ip,change_time:time})
-          user.ip = ip
-      }
+    if (user.email !== email) {
+      user.emails.push({ email: user.email, change_time: time })
+      user.email = email
+    }
 
-      if(user.location.latitude !== location.latitude && user.location.longitude !== location.longitude ){
-          user.location_list.push({location:user.location,change_time:time})
-          user.location = location
-      }
+    if (user.ip !== ip) {
+      user.ip_list.push({ ip: old_ip, change_time: time })
+      user.ip = ip
+    }
+
+    if (user.location.latitude !== location.latitude && user.location.longitude !== location.longitude) {
+      user.location_list.push({ location: user.location, change_time: time })
+      user.location = location
+    }
+
+    User.findByIdAndUpdate(user._id, {
+      name: user.name,
+      names: user.names,
+      email: user.email,
+      emails: user.emails,
+      ip: user.ip,
+      ip_list: user.ip_list,
+      location: user.location,
+      location_list: user.location_list
+    }).then(data => {
+
+      return res.json({ status: true, user: data });
+    })
+      .catch(err =>{
+        console.log(err);
+
+        return res.json({status:false});
+      });
 
 
-  }else{
-      const user = await User.create({
-          name:name,
-          email:email,
-          phone_number:phone_number,
-          status:{
-              status_name:"user",
-              delivery_time : time
-          },
-          ip:ip,
-          location:location,
-          lang:lang,
-          langs:langs,
-          platform:platform,
-          agent:userAgent,
-          login_time:time,
+
+  } else {
+    const newUser = await User.create({
+      name: name,
+      email: email,
+      phone_number: phone_number,
+      status: {
+        status_name: "user",
+        delivery_time: time
+      },
+      ip: ip,
+      location: location,
+      lang: lang,
+      langs: langs,
+      platform: platform,
+      agent: userAgent,
+      login_time: time,
+    })
+      .then(data => {
+        return res.json({ status: true, user: data });
       })
-      .then(data=>{
-          return res.json({status:true,user:data});
-      })
-      .catch(err=>console.log(err));
+      .catch(err =>{
+        console.log(err);
+
+        return res.json({status:false});
+      });
   }
 };
+
+
 
 module.exports.getAllUsers = async (req, res, next) => {
   try {

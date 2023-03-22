@@ -9,10 +9,8 @@ import "./style.css"
 
 
 
-import ChatRegister from "../../new-components/ChatRegister";
-import ChatHeader from "../../new-components/ChatHeader";
-
-
+import RegisterForm from "../../new-components/RegisterForm";
+import RegisterHeader from "../../new-components/RegisterHeader";
 
 
 
@@ -36,7 +34,7 @@ export default function Register() {
   // Register Check
   useEffect(() => {
     if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-      navigate("/");
+      navigate("/chat");
     }
   }, []);
 
@@ -101,6 +99,7 @@ export default function Register() {
             platform,
             userAgent
           });
+          console.warn("user data send");
 
 
           if (data.status === false) {
@@ -111,7 +110,7 @@ export default function Register() {
               process.env.REACT_APP_LOCALHOST_KEY,
               JSON.stringify(data.user)
             );
-            navigate("/");
+            navigate("/chat");
           }
 
         })
@@ -145,10 +144,10 @@ export default function Register() {
           </div>
 
           {/* Header Component */}
-          <ChatHeader changeChatVisible={openChat} />
+          <RegisterHeader changeChatVisible={openChat} />
 
           {/* Registger Component */}
-          <ChatRegister changeInput={handleChange} />
+          <RegisterForm changeInput={handleChange} submitFunc={handleSubmit} />
 
         </div>
       </div>
