@@ -82,8 +82,8 @@ export default function Chat() {
                         <div className="body-background"></div>
                     </div>
 
-                    <ChatHeader changeChatVisible={openChat} />
-                    <ChatContainer currentMessageBox={currentMessageBox}/>
+                    <ChatHeader changeChatVisible={openChat}  />
+                    <ChatContainer currentMessageBox={currentMessageBox} socket={socket}/>
 
                 </div>
             </div>
