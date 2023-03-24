@@ -3,9 +3,13 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const authRoutes = require("./routes/auth");
 const messageRoutes = require("./routes/messages");
+const colors = require('colors/safe');
 const app = express();
 const socket = require("socket.io");
 require("dotenv").config();
+
+
+
 
 app.use(cors());
 app.use(express.json());
@@ -46,7 +50,7 @@ io.on("connection", (socket) => {
     onlineUsers.set(userId, socket.id);
   });
 
-  socket.on("login-box", (userId,box) => {
+  socket.on("login-box", ({userId,box}) => {
     if(!onlineUsers.get(userId)){
       onlineUsers.set(userId, socket.id)
     }

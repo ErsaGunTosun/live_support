@@ -19,18 +19,17 @@ export default function Chat() {
     const [currentMessageBox, setCurrentMessageBox] = useState(undefined);
     const [currentUser, setCurrentUser] = useState(undefined);
 
-    // User Check (!)
-    //   useEffect(async () => {
-    //     if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-    //       navigate("/register");
-    //     } else {
-    //       setCurrentUser(
-    //         await JSON.parse(
-    //           localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-    //         )
-    //       );
-    //     }
-    //   }, []);
+      useEffect(async () => {
+        if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+          navigate("/register");
+        } else {
+          setCurrentUser(
+            await JSON.parse(
+              localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
+            )
+          );
+        }
+      }, []);
 
     useEffect(() => {
         if (currentUser) {
@@ -40,16 +39,23 @@ export default function Chat() {
     }, [currentUser]);
 
     useEffect(async () => {
-        if (!currentMessageBox) {
-            const data = await axios.get(`${messageBox}/${currentUser._id}`);
-            if (data.status = "true" && data.box) {
-                if(data.user == currentUser._id){
-                    setCurrentMessageBox(data.box);
-                    socket.current.emit("login-box",currentUser._id, currentMessageBox );
+        if(currentUser){
+            if (!currentMessageBox) {
+                console.log("req box");
+                const {data} = await axios.get(`${messageBox}/${currentUser._id}`);
+                if (data.status = true && data.box[0]) {
+                    if(data.user == currentUser._id){
+                        setCurrentMessageBox(data.box[0]);
+                        socket.current.emit("login-box",{
+                            userId:currentUser._id,
+                            box:data.box[0]
+                        });
+                    }
+                   
                 }
-               
             }
         }
+       
     }, [currentUser]);
 
 

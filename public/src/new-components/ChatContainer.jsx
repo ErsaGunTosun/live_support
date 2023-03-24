@@ -36,8 +36,8 @@ function ChatContainer({ currentMessageBox }) {
                         :
                         <div className='row w-100 text-center'>
                             <div className='col-12'>
-                                <p class="spinner-border text-danger m-0" >
-                                    <span class="visually-hidden">Loading...</span>
+                                <p className="spinner-border text-danger m-0" >
+                                    <span className="visually-hidden">Loading...</span>
                                 </p>
                             </div>
                             <p className='h5 fw-bold text-danger fst-italic'>Connecting To Support</p>

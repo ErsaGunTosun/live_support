@@ -18,7 +18,6 @@ module.exports.login = async (req, res, next) => {
 };
 
 module.exports.register = async (req, res, next) => {
-  console.log("user data req");
   const { name, email, phone_number, ip, location, lang, langs, platform, userAgent } = req.body;
   const UserCheck = await User.find({ phone_number });
   const time_value = Date.now();
@@ -26,7 +25,6 @@ module.exports.register = async (req, res, next) => {
 
   if (UserCheck.length > 0) {
     let user = UserCheck[0];
-    console.log(user)
     if (user.name !== name) {
       user.names.push({ name: user.name, change_time: time })
       user.name = name
@@ -38,7 +36,7 @@ module.exports.register = async (req, res, next) => {
     }
 
     if (user.ip !== ip) {
-      user.ip_list.push({ ip: old_ip, change_time: time })
+      user.ip_list.push({ ip: user.ip, change_time: time })
       user.ip = ip
     }
 
