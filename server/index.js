@@ -6,9 +6,9 @@ const messageRoutes = require("./routes/messages");
 const colors = require('colors/safe');
 const app = express();
 const socket = require("socket.io");
+
+
 require("dotenv").config();
-
-
 
 
 app.use(cors());
@@ -58,9 +58,22 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send-msg", (data) => {
-    const sendUserSocket = onlineUsers.get(data.to);
-    if (sendUserSocket) {
-      socket.to(sendUserSocket).emit("msg-recieve", data.msg);
+    const box = messagebox.get(data.to);
+    if(box){
+      if(box.user == data.from){
+        if(box.admin){
+          const sendAdminSocket = onlineUsers.get(box.admin);
+          if(sendAdminSocket){
+            socket.to(sendAdminSocket).emit("msg-recieve", data.msg);
+          }
+        }
+      }else{
+        const sendUserSocket = onlineUsers.get(box.user);
+        if(sendUserSocket){
+          socket.to(sendUserSocket).emit("msg-recieve", data.msg);
+        }
+      }
     }
+
   });
 });

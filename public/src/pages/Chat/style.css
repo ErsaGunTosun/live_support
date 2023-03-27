@@ -257,39 +257,6 @@ body {
     background: transparent;
 }
 
-.chat-container {
-    width: 95%;
-    height: 82%;
-    background-color: white;
-    border-radius: 10px;
-    margin-left: 8px;
-    color: black;
-    -webkit-box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.43);
-    -moz-box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.43);
-    box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.43);
-}
-
-.chat-container .form-control {
-    outline: 0;
-    box-shadow: none !important;
-}
-
-.chat-container .start-btn {
-    background-color: red;
-    border: 1px solid red;
-    width: 50%;
-    border-radius: 100px;
-}
-
-.chat-container .start-btn:hover {
-    color: red;
-    border: 1px solid red;
-    width: 50%;
-    border-radius: 100px;
-}
-
-
-
 .floating-chat .chat .footer .text-box {
     border-radius: 3px;
     background: rgba(25, 147, 147, 0.2);
@@ -375,6 +342,91 @@ body {
     color: white;
 }
 
+
+/* chat container style */
+
+.chat-container {
+    width: 95%;
+    height: 82%;
+    background-color: white;
+    border-radius: 10px;
+    margin-left: 8px;
+    color: black;
+    -webkit-box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.43);
+    -moz-box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.43);
+    box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.43);
+}
+
+.chat-container .chat-box {
+    display: grid;
+    grid-template-rows: 85% 15%;
+    gap: 0.1rem;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.chat-container .chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+}
+
+.chat-container .chat-messages {
+    padding: 1rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow: auto;
+}
+
+.chat-container .chat-messages::-webkit-scrollbar {
+    padding: 1rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow: auto;
+}
+
+.chat-container .chat-messages::-ms-thumb {
+    background-color: #ffffff39;
+    width: 0.1rem;
+    border-radius: 1rem;
+}
+
+.chat-container .chat-messages .message {
+    display: flex;
+    align-items: center;
+}
+
+.chat-container .chat-messages .message .content {
+    max-width: 70%;
+    overflow-wrap: break-word;
+    padding: 0.7rem;
+    font-size: 1.1rem;
+    border-radius: 0.6rem;
+    color: black;
+}
+
+.chat-container .chat-messages .message {
+    display: flex;
+    align-items: center;
+}
+
+.chat-container .chat-messages .sended {
+    justify-content: flex-end;
+}
+.chat-container .chat-messages .sended .content {
+    background-color: #d9d9d9;
+}
+
+.chat-container .chat-messages .recieved {
+    justify-content: flex-start;
+}
+.chat-container .chat-messages .recieved .content {
+    background-color: rgba(243, 52, 52, 0.9);
+}
 
 
 

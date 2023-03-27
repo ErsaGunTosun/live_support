@@ -46,3 +46,66 @@ module.exports.messageBox = async (req, res, next) => {
     }
 }
 
+module.exports.addMessageToBox = async (req,res,next) =>{
+    try{
+        const {from, to, message} = req.body;
+        
+        let messageBox = await MessageBox.find({_id:to})
+        .then(async (rstl)=>{
+            if(rstl.length > 0){
+                let box = rstl[0];
+                if(box.isActive){
+                    let msg= {
+                        sender: from,
+                        message:{text:message}
+                    }
+                    box.messages.push(msg);
+                   MessageBox.findOneAndUpdate({_id:box._id},{messages:box.messages})
+                   .then(newbox=>{
+                    res.json({ msg: "Message added successfully." });
+                   })
+                   .catch(err=>{
+                    res.json({ msg: "Failed to add message to the database" });
+                   })
+                    
+                }
+            }else{
+                res.json({ msg: "Failed to add message to the database" });
+            }
+        })
+        .catch(err=>{
+            console.log(err);
+            res.json({ msg: "Failed to add message to the database" });
+        })
+
+
+    }catch(ex){
+        next(ex);
+    }
+
+
+
+
+
+}
+
+module.exports.getMessagesToBox = async (req,res,next) =>{
+    try {
+        const { from, to } = req.body;
+    
+        const findBox = await MessageBox.find({_id:to});
+        
+        if(findBox.length > 0){
+            let box = findBox[0];
+            const projectedMessages = box.messages.map((msg) => {
+                return {
+                  fromSelf: msg.sender.toString() === from,
+                  message: msg.message.text,
+                };
+              });
+              res.json(projectedMessages);
+        }
+      } catch (ex) {
+        next(ex);
+      }
+}
