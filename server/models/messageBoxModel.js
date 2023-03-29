@@ -15,6 +15,10 @@ const MessageBoxSchema = mongoose.Schema(
       type:Boolean,
       required:true
     },
+    rate:{
+      type:String,
+      required:false
+    },
     messages: Array,
   },
   {

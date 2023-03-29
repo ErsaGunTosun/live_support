@@ -7,6 +7,8 @@ const colors = require('colors/safe');
 const app = express();
 const socket = require("socket.io");
 
+const {addRate} = require('./controllers/messageboxController');
+
 
 require("dotenv").config();
 
@@ -50,32 +52,44 @@ io.on("connection", (socket) => {
     onlineUsers.set(userId, socket.id);
   });
 
-  socket.on("login-box", ({userId,box}) => {
-    if(!onlineUsers.get(userId)){
+  socket.on("login-box", ({ userId, box }) => {
+    if (!onlineUsers.get(userId)) {
       onlineUsers.set(userId, socket.id)
     }
-    messagebox.set(box._id,box);
+    messagebox.set(box._id, box);
   });
 
   socket.on("send-msg", (data) => {
     const box = messagebox.get(data.to);
-    if(box){
-      if(box.user == data.from){
-        if(box.admin){
+    if (box) {
+      if (box.user == data.from) {
+        if (box.admin) {
           const sendAdminSocket = onlineUsers.get(box.admin);
-          if(sendAdminSocket){
+          if (sendAdminSocket) {
             socket.to(sendAdminSocket).emit("msg-recieve", data.msg);
           }
         }
-      }else{
+      } else {
         const sendUserSocket = onlineUsers.get(box.user);
-        if(sendUserSocket){
+        if (sendUserSocket) {
           socket.to(sendUserSocket).emit("msg-recieve", data.msg);
         }
-    
+
       }
     }
   });
 
-  
+  socket.on("send-rate", (data) => {
+    const { from, to, rate } = data;
+    const box = messagebox.get(to);
+    if (box) {
+      if (box.user == from && rate) {
+        addRate(box, rate);
+        socket.emit("add-rate", box);
+      }
+    }
+
+  })
+
+
 });

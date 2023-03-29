@@ -44,14 +44,15 @@ export default function Chat() {
         if (currentUser) {
             if (!currentMessageBox) {
                 console.log("req box");
-                const { data } = await axios.get(`${messageBox}/${currentUser._id}`);
-                if (data.status = true && data.box[0]) {
+                const {data}  = await axios.get(`${messageBox}/${currentUser._id}`);
+                console.log(data.status);
+                console.log(data.box);
+                if (data.status = true && data.box) {
                     if (data.user == currentUser._id) {
-
-                        setCurrentMessageBox(data.box[0]);
+                        setCurrentMessageBox(data.box);
                         socket.current.emit("login-box", {
                             userId: currentUser._id,
-                            box: data.box[0]
+                            box: data.box
                         });
                     }
 
@@ -95,11 +96,11 @@ export default function Chat() {
 
                     <ChatHeader changeChatVisible={openChat} changeCloseTabVisible={openCloseTab} />
                     {
-                        isCloseTab 
-                        ? <RateContainer currentMessageBox={currentMessageBox} socket={socket} /> 
-                        : <ChatContainer currentMessageBox={currentMessageBox} socket={socket} />
+                        isCloseTab
+                            ? <RateContainer currentMessageBox={currentMessageBox} socket={socket} changeCloseTabVisible={openCloseTab} />
+                            : <ChatContainer currentMessageBox={currentMessageBox} socket={socket} />
                     }
-                    
+
 
                 </div>
             </div>

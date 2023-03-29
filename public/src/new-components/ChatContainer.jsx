@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
+
 import axios from "axios";
 import { sendMessageBoxRoute, recieveMessageBoxRoute } from "../utils/APIRoutes";
 
 import ChatInput from "./ChatInput";
 
 function ChatContainer({ currentMessageBox, socket }) {
+  const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
   const scrollRef = useRef();
   const [arrivalMessage, setArrivalMessage] = useState(null);
@@ -57,6 +60,13 @@ function ChatContainer({ currentMessageBox, socket }) {
       socket.current.on("msg-recieve", (msg) => {
         setArrivalMessage({ fromSelf: false, message: msg });
       });
+
+      socket.current.on("add-rate",(box)=>{
+        if(box._id == currentMessageBox._id){
+          localStorage.removeItem(process.env.REACT_APP_LOCALHOST_KEY);
+          navigate("/register");
+        }
+      })
     }
   }, []);
 

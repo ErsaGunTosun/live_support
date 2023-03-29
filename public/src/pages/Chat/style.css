@@ -379,7 +379,7 @@ body {
 }
 
 .chat-container .chat-messages {
-    padding: 1rem 2rem;
+    padding: 1rem 1rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -387,18 +387,17 @@ body {
 }
 
 .chat-container .chat-messages::-webkit-scrollbar {
-    padding: 1rem 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    width: 10px;
+    height: 10px;
+    margin: 0px;
+    padding: 0px;
     overflow: auto;
 }
+.chat-container .chat-messages::-webkit-scrollbar-thumb {
+    background: #e0dfdf85;
+    border-radius: 10px;
+  }
 
-.chat-container .chat-messages::-ms-thumb {
-    background-color: #ffffff39;
-    width: 0.1rem;
-    border-radius: 1rem;
-}
 
 .chat-container .chat-messages .message {
     display: flex;
