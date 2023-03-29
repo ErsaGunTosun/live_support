@@ -10,26 +10,28 @@ import "./style.css"
 
 import ChatHeader from "../../new-components/ChatHeader";
 import ChatContainer from "../../new-components/ChatContainer";
+import RateContainer from "../../new-components/RateContainer";
 
 
 export default function Chat() {
     const navigate = useNavigate();
     const socket = useRef();
     const [isOpen, setIsOpen] = useState(false);
+    const [isCloseTab, setIsCloseTab] = useState(false);
     const [currentMessageBox, setCurrentMessageBox] = useState(undefined);
     const [currentUser, setCurrentUser] = useState(undefined);
 
-      useEffect(async () => {
+    useEffect(async () => {
         if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-          navigate("/register");
+            navigate("/register");
         } else {
-          setCurrentUser(
-            await JSON.parse(
-              localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-            )
-          );
+            setCurrentUser(
+                await JSON.parse(
+                    localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
+                )
+            );
         }
-      }, []);
+    }, []);
 
     useEffect(() => {
         if (currentUser) {
@@ -39,30 +41,39 @@ export default function Chat() {
     }, [currentUser]);
 
     useEffect(async () => {
-        if(currentUser){
+        if (currentUser) {
             if (!currentMessageBox) {
                 console.log("req box");
-                const {data} = await axios.get(`${messageBox}/${currentUser._id}`);
+                const { data } = await axios.get(`${messageBox}/${currentUser._id}`);
                 if (data.status = true && data.box[0]) {
-                    if(data.user == currentUser._id){
+                    if (data.user == currentUser._id) {
+
                         setCurrentMessageBox(data.box[0]);
-                        socket.current.emit("login-box",{
-                            userId:currentUser._id,
-                            box:data.box[0]
+                        socket.current.emit("login-box", {
+                            userId: currentUser._id,
+                            box: data.box[0]
                         });
                     }
-                   
+
                 }
             }
         }
-       
+
     }, [currentUser]);
+
+
 
 
     // Change Chat Visible func
     const openChat = () => {
         setIsOpen(!isOpen)
     }
+
+    // change close tab visible func
+    const openCloseTab = () => {
+        setIsCloseTab(!isCloseTab)
+    }
+
 
     return (
         <>
@@ -82,8 +93,13 @@ export default function Chat() {
                         <div className="body-background"></div>
                     </div>
 
-                    <ChatHeader changeChatVisible={openChat}  />
-                    <ChatContainer currentMessageBox={currentMessageBox} socket={socket}/>
+                    <ChatHeader changeChatVisible={openChat} changeCloseTabVisible={openCloseTab} />
+                    {
+                        isCloseTab 
+                        ? <RateContainer currentMessageBox={currentMessageBox} socket={socket} /> 
+                        : <ChatContainer currentMessageBox={currentMessageBox} socket={socket} />
+                    }
+                    
 
                 </div>
             </div>

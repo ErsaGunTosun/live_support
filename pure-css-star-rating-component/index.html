@@ -1,0 +1,152 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSS Only Rating Control</title>
+<link href="http://www.cssscript.com/wp-includes/css/sticky.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body { background-color:#fafafa;}
+.content {
+  text-align: center;
+  margin-top:150px;
+}
+.content h1 {
+  font-family: 'Sansita', sans-serif;
+  letter-spacing: 1px;
+  font-size: 50px;
+  color: #282828;
+  margin-bottom: 10px;
+}
+.content  i {
+  color: #FFC107;
+}
+.content span {
+  position: relative;
+  display: inline-block;
+}
+.content  span:before, .content  span:after {
+  position: absolute;
+  content: "";
+  background-color: #282828;
+  width: 40px;
+  height: 2px;
+  top: 40%;
+}
+.content  span:before {
+  left: -45px;
+}
+.content  span:after {
+  right: -45px;
+}
+.content p {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+.wrapper {
+  position: relative;
+  display: inline-block;
+  border: none;
+  font-size: 14px;
+  margin: 50px auto;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.wrapper input {
+  border: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  position: absolute !important;
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+  opacity: 0;
+}
+
+.wrapper label {
+  position: relative;
+  float: right;
+  color: #C8C8C8;
+}
+
+.wrapper label:before {
+  margin: 5px;
+  content: "\f005";
+  font-family: FontAwesome;
+  display: inline-block;
+  font-size: 1.5em;
+  color: #ccc;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.wrapper input:checked ~ label:before {
+  color: #FFC107;
+}
+
+.wrapper label:hover ~ label:before {
+  color: #ffdb70;
+}
+
+.wrapper label:hover:before {
+  color: #FFC107;
+}
+</style>
+</head>
+
+<body>
+<div id="css-script-menu">
+  <div class="css-script-center">
+    <ul>
+      <li><a href="http://www.cssscript.com/pure-css-star-rating-component/">Download</a></li>
+      <li><a href="http://www.cssscript.com/">Back To CSS Script</a></li>
+    </ul>
+    <div class="css-script-ads">
+    <script type="text/javascript"><!--
+google_ad_client = "ca-pub-2783044520727903";
+/* CSSScript Demo Page */
+google_ad_slot = "3025259193";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+      <script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script></div>
+    <div class="css-script-clear"></div>
+  </div>
+</div>
+<div class="content">
+  <h1>CSS Only Rating Control</h1>
+</div>
+
+<div class="wrapper">
+  <input type="checkbox" id="st1" value="1" />
+  <label for="st1"></label>
+  <input type="checkbox" id="st2" value="2" />
+  <label for="st2"></label>
+  <input type="checkbox" id="st3" value="3" />
+  <label for="st3"></label>
+  <input type="checkbox" id="st4" value="4" />
+  <label for="st4"></label>
+  <input type="checkbox" id="st5" value="5" />
+  <label for="st5"></label>
+</div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-46156385-1', 'cssscript.com');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>
