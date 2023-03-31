@@ -1,6 +1,6 @@
 import { React, useEffect, useState } from 'react'
 
-import "../pages/Chat/style.css"
+import  '../styles/chat/main.css'
 
 function RateContainer({ currentMessageBox, socket,changeCloseTabVisible }) {
     const [rate, setRate] = useState(0);

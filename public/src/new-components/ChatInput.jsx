@@ -4,7 +4,7 @@ import { IoMdSend } from "react-icons/io";
 import styled from "styled-components";
 import Picker from "emoji-picker-react";
 
-import "../pages/Chat/style.css"
+import  '../styles/chat/main.css'
 
 export default function ChatInput({ handleSendMsg }) {
   const [msg, setMsg] = useState("");

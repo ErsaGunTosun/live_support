@@ -7,7 +7,7 @@ import axios from "axios";
 import { registerRoute } from "../../utils/APIRoutes";
 
 //Style
-import './main.css'
+import '../../styles/register/main.css';
 
 function Register(props) {
     const toastOptions = {
@@ -112,7 +112,7 @@ function Register(props) {
     return (
         <>
 
-            <div className="header text-center mt-2">
+            <div className="header text-center mt-3 mb-1">
                 <span className="title h4">
                     Welcome To Live Support
                 </span>
@@ -122,7 +122,7 @@ function Register(props) {
                 </div>
             </div>
 
-            <form className="support-form" autoComplete="off" onSubmit={(event) => handleSubmit(event)}>
+            <form className="support-form pt-3" autoComplete="off" onSubmit={(event) => handleSubmit(event)}>
 
                 <div className="mb-2">
                     <label htmlFor="inputName" className="form-label mb-0">Name & Surname</label>

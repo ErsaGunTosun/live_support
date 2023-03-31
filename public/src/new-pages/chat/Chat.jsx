@@ -14,8 +14,7 @@ import WomenLogo from "../../assets/pp/women.jpg";
 import { messageBox, host } from "../../utils/APIRoutes";
 
 //Styles
-import './main.css'
-
+import  '../../styles/chat/main.css'
 
 function Chat(props) {
   const [currentMessageBox, setCurrentMessageBox] = useState(undefined);

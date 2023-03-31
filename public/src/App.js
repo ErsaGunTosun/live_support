@@ -1,9 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Chat from "./pages/Chat/Chat"
-import Register from "./pages/Register/Register";
-
+// Components
 import Support  from "./Support";
 
 export default function App() {
