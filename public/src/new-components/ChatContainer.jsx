@@ -7,8 +7,8 @@ import { sendMessageBoxRoute, recieveMessageBoxRoute } from "../utils/APIRoutes"
 
 import ChatInput from "./ChatInput";
 
-function ChatContainer({ currentMessageBox, socket }) {
-  const navigate = useNavigate();
+function ChatContainer({ currentMessageBox, socket,connectChat }) {
+  // const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
   const scrollRef = useRef();
   const [arrivalMessage, setArrivalMessage] = useState(null);
@@ -64,7 +64,7 @@ function ChatContainer({ currentMessageBox, socket }) {
       socket.current.on("add-rate",(box)=>{
         if(box._id == currentMessageBox._id){
           localStorage.removeItem(process.env.REACT_APP_LOCALHOST_KEY);
-          navigate("/register");
+          connectChat();
         }
       })
     }

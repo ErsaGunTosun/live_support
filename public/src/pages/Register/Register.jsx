@@ -15,7 +15,7 @@ import RegisterHeader from "../../new-components/RegisterHeader";
 
 
 export default function Register() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const toastOptions = {
     position: "bottom-right",
     autoClose: 8000,
@@ -34,7 +34,7 @@ export default function Register() {
   // Register Check
   useEffect(() => {
     if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-      navigate("/chat");
+      // navigate("/chat");
     }
   }, []);
 
@@ -110,7 +110,7 @@ export default function Register() {
               process.env.REACT_APP_LOCALHOST_KEY,
               JSON.stringify(data.user)
             );
-            navigate("/chat");
+            // navigate("/chat");
           }
 
         })

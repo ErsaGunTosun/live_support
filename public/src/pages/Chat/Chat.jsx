@@ -14,7 +14,7 @@ import RateContainer from "../../new-components/RateContainer";
 
 
 export default function Chat() {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const socket = useRef();
     const [isOpen, setIsOpen] = useState(false);
     const [isCloseTab, setIsCloseTab] = useState(false);
@@ -23,7 +23,7 @@ export default function Chat() {
 
     useEffect(async () => {
         if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-            navigate("/register");
+            // navigate("/register");
         } else {
             setCurrentUser(
                 await JSON.parse(
