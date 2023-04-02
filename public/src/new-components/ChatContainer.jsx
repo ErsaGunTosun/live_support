@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate, Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-
 import axios from "axios";
+
+
+// API Routes
 import { sendMessageBoxRoute, recieveMessageBoxRoute } from "../utils/APIRoutes";
 
+// Components
 import ChatInput from "./ChatInput";
 
-function ChatContainer({ currentMessageBox, socket,connectChat }) {
-  // const navigate = useNavigate();
+function ChatContainer({ currentMessageBox, socket, connectChat }) {
   const [messages, setMessages] = useState([]);
   const scrollRef = useRef();
   const [arrivalMessage, setArrivalMessage] = useState(null);
@@ -61,8 +62,8 @@ function ChatContainer({ currentMessageBox, socket,connectChat }) {
         setArrivalMessage({ fromSelf: false, message: msg });
       });
 
-      socket.current.on("add-rate",(box)=>{
-        if(box._id == currentMessageBox._id){
+      socket.current.on("add-rate", (box) => {
+        if (box._id == currentMessageBox._id) {
           localStorage.removeItem(process.env.REACT_APP_LOCALHOST_KEY);
           connectChat();
         }
@@ -77,12 +78,15 @@ function ChatContainer({ currentMessageBox, socket,connectChat }) {
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
   return (
     <>
+
       <div className='chat-container d-flex justify-content-center align-items-center'>
         {
           (currentMessageBox !== undefined)
             ?
+            // Chat Container
             <div className="chat-box">
               <div className="chat-messages">
                 {messages.map((message) => {
@@ -100,9 +104,13 @@ function ChatContainer({ currentMessageBox, socket,connectChat }) {
                   );
                 })}
               </div>
+
+              {/* Chat Input Component */}
               <ChatInput handleSendMsg={handleSendMsg} />
+
             </div>
             :
+            // Loading Container
             <div className='row w-100 text-center'>
               <div className='col-12'>
                 <p className="spinner-border text-danger m-0" >
@@ -111,11 +119,9 @@ function ChatContainer({ currentMessageBox, socket,connectChat }) {
               </div>
               <p className='h5 fw-bold text-danger fst-italic'>Connecting To Support</p>
             </div>
-
         }
-
-
       </div>
+
     </>
   )
 }

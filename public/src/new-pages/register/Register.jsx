@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import ipLocation from "iplocation";
 import axios from "axios";
 
@@ -112,6 +112,7 @@ function Register(props) {
     return (
         <>
 
+            {/* Register Header */}
             <div className="header text-center mt-3 mb-1">
                 <span className="title h4">
                     Welcome To Live Support
@@ -122,6 +123,7 @@ function Register(props) {
                 </div>
             </div>
 
+            {/* Register Form */}
             <form className="support-form pt-3" autoComplete="off" onSubmit={(event) => handleSubmit(event)}>
 
                 <div className="mb-2">

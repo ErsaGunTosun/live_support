@@ -1,5 +1,6 @@
 import { React, useEffect, useState } from 'react'
 
+// Styles
 import  '../styles/chat/main.css'
 
 function RateContainer({ currentMessageBox, socket,changeCloseTabVisible }) {

@@ -14,7 +14,7 @@ import WomenLogo from "../../assets/pp/women.jpg";
 import { messageBox, host } from "../../utils/APIRoutes";
 
 //Styles
-import  '../../styles/chat/main.css'
+import '../../styles/chat/main.css'
 
 function Chat(props) {
   const [currentMessageBox, setCurrentMessageBox] = useState(undefined);
@@ -24,7 +24,7 @@ function Chat(props) {
 
   useEffect(async () => {
     if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-      // add navigate
+      props.connectChat();
     } else {
       setCurrentUser(
         await JSON.parse(
@@ -44,10 +44,7 @@ function Chat(props) {
   useEffect(async () => {
     if (currentUser) {
       if (!currentMessageBox) {
-        console.log("req box");
         const { data } = await axios.get(`${messageBox}/${currentUser._id}`);
-        console.log(data.status);
-        console.log(data.box);
         if (data.status = true && data.box) {
           if (data.user == currentUser._id) {
             setCurrentMessageBox(data.box);
@@ -67,12 +64,15 @@ function Chat(props) {
   const openCloseTab = () => {
     setIsCloseTab(!isCloseTab)
   }
+  
   return (
     <>
+
+      {/* Chat Header */}
       <div className="header text-start m-0 p-0 mb-1">
         <span className="title h4 ms-2 mb-0">
           <img src={ManLogo} className="header-logo mt-3" />
-          <span className='header-text h6 ms-2 fst-italic fw-bold'>Tillidd Fullriver</span>
+          <span className='header-text h6 ms-2 fst-italic fw-bold'>Customer Service</span>
         </span>
         <div className="chat-settings text-end d-flex align-items-center me-3">
           <span onClick={openCloseTab} className="fa-solid fa-comment-slash fs-6 chat-close"></span>
@@ -82,10 +82,11 @@ function Chat(props) {
         </div>
       </div>
 
+      {/* Chat Body */}
       {
         isCloseTab
           ? <RateContainer currentMessageBox={currentMessageBox} socket={socket} changeCloseTabVisible={openCloseTab} />
-          : <ChatContainer currentMessageBox={currentMessageBox} socket={socket} connectChat={props.connectChat}/>
+          : <ChatContainer currentMessageBox={currentMessageBox} socket={socket} connectChat={props.connectChat} />
       }
 
 
