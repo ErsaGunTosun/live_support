@@ -25,7 +25,7 @@ function Login() {
   }, []);
 
   const handleValidation = () => {
-    const {email, password } = values;
+    const { email, password } = values;
     if (email.length < 3) {
       setIsError(true);
       return false;
@@ -40,8 +40,8 @@ function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (handleValidation()) {
-      
-      const { email, password,isRemember } = values;
+
+      const { email, password, isRemember } = values;
 
       await axios.get('https://ipecho.net/plain', {
         headers: {
@@ -79,7 +79,7 @@ function Login() {
           if (data.status === true) {
             localStorage.setItem(
               process.env.REACT_APP_LOCALHOST_KEY,
-              JSON.stringify(data.user)
+              JSON.stringify(data.admin)
             );
             navigate('/');
           }
@@ -87,8 +87,8 @@ function Login() {
         })
       })
 
-    }else{
-        // input data reset will be added
+    } else {
+      // input data reset will be added
     }
   };
 
@@ -110,8 +110,8 @@ function Login() {
               <div className="card">
 
                 <div className="card-header pt-4 pb-4 text-center bg-danger">
-                  <a href="#">
-                    <span><img src="assets/images/logo.png" alt="" height="18" /></span>
+                  <a href="#" className='text-light fst-italic'>
+                    <h1>Live Support Admin</h1>
                   </a>
                 </div>
 
@@ -119,7 +119,7 @@ function Login() {
 
                   <div className="text-center w-75 m-auto">
                     <h4 className="text-dark-50 text-center mt-0 fw-bold">Sign In</h4>
-                    <p className={`text-danger mb-1 fw-bold ${isError?"d-block":"d-none"}`}>The email or password you entered is incorrect.</p>
+                    <p className={`text-danger mb-1 fw-bold ${isError ? "d-block" : "d-none"}`}>The email or password you entered is incorrect.</p>
                     <p className="text-muted mb-4 mt-0">Enter your email address and password to access admin panel.</p>
                   </div>
 
