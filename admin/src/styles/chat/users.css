@@ -1,0 +1,14 @@
+
+.users-item {
+    cursor: pointer !important;
+}
+
+.users-item:hover {
+    background-color: rgb(238, 242, 247) !important;
+
+}
+
+.users-item-select{
+    cursor: pointer !important;
+    background-color: rgb(238, 242, 247) !important;
+}
