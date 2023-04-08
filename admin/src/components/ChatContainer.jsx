@@ -1,13 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import SimpleBar from 'simplebar-react';
 import axios from 'axios';
 import { sendMessageBoxRoute, recieveMessageBoxRoute, acceptBoxRoute } from "../utils/APIRoutes";
 
-function ChatContainer({ currentChat, admin, socket }) {
+function ChatContainer({ currentChat, socket }) {
     const ref = useRef();
+    const navigate = useNavigate();
     const [msg, setMsg] = useState("");
+    const [admin, setAdmin] = useState(undefined);
     const [messages, setMessages] = useState([]);
     const [arrivalMessage, setArrivalMessage] = useState(null);
+
 
 
     useEffect(() => {
@@ -77,9 +81,12 @@ function ChatContainer({ currentChat, admin, socket }) {
     useEffect(() => {
 
         if (socket) {
-            socket.on("msg-recieve", (data) => {
-                if (admin._id == data.to) {
-                    setArrivalMessage({ fromSelf: false, message: data.msg });
+            socket.on("msg-recieve", (rMsg) => {
+                let data = JSON.parse(
+                    localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
+                )
+                if (data._id == rMsg.to) {
+                    setArrivalMessage({ fromSelf: false, message: rMsg.msg });
                 }
 
             });
