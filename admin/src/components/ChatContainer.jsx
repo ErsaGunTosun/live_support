@@ -4,7 +4,7 @@ import axios from 'axios';
 import { sendMessageBoxRoute, recieveMessageBoxRoute, acceptBoxRoute } from "../utils/APIRoutes";
 
 function ChatContainer({ currentChat, admin, socket }) {
-    const scrollRef = useRef();
+    const ref = useRef();
     const [msg, setMsg] = useState("");
     const [messages, setMessages] = useState([]);
     const [arrivalMessage, setArrivalMessage] = useState(null);
@@ -33,7 +33,7 @@ function ChatContainer({ currentChat, admin, socket }) {
         event.preventDefault();
         if (msg.length > 0) {
             handleSendMsg(msg);
-            setMsg(" ");
+            setMsg("");
         }
     };
 
@@ -41,7 +41,7 @@ function ChatContainer({ currentChat, admin, socket }) {
         const data = await JSON.parse(
             localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
         );
-        socket.current.emit("send-msg", {
+        socket.emit("send-msg", {
             to: currentChat.box.details[0]._id,
             from: data._id,
             msg,
@@ -67,7 +67,7 @@ function ChatContainer({ currentChat, admin, socket }) {
             to: currentChat.box.details[0]._id,
         });
         if (result.status) {
-            socket.current.emit("add-box-admin", {
+            socket.emit("add-box-admin", {
                 to: currentChat.box.details[0]._id,
                 admin: data._id,
             });
@@ -76,8 +76,8 @@ function ChatContainer({ currentChat, admin, socket }) {
 
     useEffect(() => {
 
-        if (socket.current) {
-            socket.current.on("msg-recieve", (data) => {
+        if (socket) {
+            socket.on("msg-recieve", (data) => {
                 if (admin._id == data.to) {
                     setArrivalMessage({ fromSelf: false, message: data.msg });
                 }
@@ -91,20 +91,21 @@ function ChatContainer({ currentChat, admin, socket }) {
         arrivalMessage && setMessages((prev) => [...prev, arrivalMessage]);
     }, [arrivalMessage]);
 
-    // useEffect(() => {
-    //     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-    // }, [messages]);
+    useEffect(() => {
+        ref.current?.recalculate();
+        ref.current?.getScrollElement().scrollIntoView({ behavior: "smooth" });
+        console.log(ref.current?.getScrollElement())
+    }, [messages]);
 
     return (
         <div className="col-xxl-10 col-xl-12 order-xl-3">
             <div className="card">
                 <div className="card-body">
-
                     {
                         currentChat ?
                             currentChat.box.details[0].adminastor ?
-                                <SimpleBar ref={scrollRef} style={{ minHeight: 500 + "px",maxHeight:550 + 'px' }} className="conversation-list" >
-                                    <ul className="conversation-list" style={{ maxHeight: 537 + "px" }}>
+                                <ul className='conversation-list'>
+                                    <SimpleBar ref={ref} style={{ minHeight: 500 + 'px', maxHeight: 537 + 'px' }} className="conversation-list row" >
                                         {
                                             currentChat && messages.map((message, index) => {
                                                 return (
@@ -134,8 +135,8 @@ function ChatContainer({ currentChat, admin, socket }) {
                                             })
 
                                         }
-                                    </ul>
-                                </SimpleBar>
+                                    </SimpleBar>
+                                </ul>
                                 :
                                 <div style={{ minHeight: 500 + 'px' }} className='d-flex justify-content-center align-items-center'>
                                     <div className='w-100 text-center'>
@@ -171,6 +172,7 @@ function ChatContainer({ currentChat, admin, socket }) {
                                     <div className="row">
                                         <div className="col mb-2 mb-sm-0">
                                             <input onChange={(e) => setMsg(e.target.value)}
+                                                value={msg}
                                                 type="text" className="form-control border-0" placeholder="Enter your text" required="" />
                                             <div className="invalid-feedback">
                                                 Please enter your messsage

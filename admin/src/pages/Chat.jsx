@@ -15,9 +15,9 @@ import ChatUserDetails from "../components/ChatUserDetails"
 
 import "../styles/chat/chat.css";
 
+const socket = io(host);
 function Chat() {
   const navigate = useNavigate();
-  const socket = useRef();
   const [admin, setAdmin] = useState(undefined);
   const [currentChat, setCurrentChat] = useState(undefined);
 
@@ -39,8 +39,7 @@ function Chat() {
 
   useEffect(() => {
     if (admin) {
-      socket.current = io(host);
-      socket.current.emit("add-user", admin._id);
+      socket.emit("add-user", admin._id);
     }
   }, [admin]);
 

@@ -16,11 +16,12 @@ import { messageBox, host } from "../../utils/APIRoutes";
 //Styles
 import '../../styles/chat/main.css'
 
+const socket = io(host);
+
 function Chat(props) {
   const [currentMessageBox, setCurrentMessageBox] = useState(undefined);
   const [currentUser, setCurrentUser] = useState(undefined);
   const [isCloseTab, setIsCloseTab] = useState(false);
-  const socket = useRef();
 
   useEffect(async () => {
     if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
@@ -36,8 +37,7 @@ function Chat(props) {
 
   useEffect(() => {
     if (currentUser) {
-      socket.current = io(host);
-      socket.current.emit("add-user", currentUser._id);
+      socket.emit("add-user", currentUser._id);
     }
   }, [currentUser]);
 
@@ -51,7 +51,7 @@ function Chat(props) {
           if (data.user == currentUser._id) {
             console.log("2");
             setCurrentMessageBox(data.box);
-            socket.current.emit("login-box", {
+            socket.emit("login-box", {
               userId: currentUser._id,
               box: data.box
             });

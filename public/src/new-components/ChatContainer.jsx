@@ -40,7 +40,7 @@ function ChatContainer({ currentMessageBox, socket, connectChat }) {
     const data = await JSON.parse(
       localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
     );
-    socket.current.emit("send-msg", {
+    socket.emit("send-msg", {
       to: currentMessageBox._id,
       from: data._id,
       msg,
@@ -57,8 +57,8 @@ function ChatContainer({ currentMessageBox, socket, connectChat }) {
   };
 
   useEffect(() => {
-    if (socket.current) {
-      socket.current.on("msg-recieve", async (data) => {
+    if (socket) {
+      socket.on("msg-recieve", async (data) => {
         console.log(data)
         const me = await JSON.parse(
           localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
@@ -69,7 +69,7 @@ function ChatContainer({ currentMessageBox, socket, connectChat }) {
 
       });
 
-      socket.current.on("add-rate", (box) => {
+      socket.on("add-rate", (box) => {
         if (box._id == currentMessageBox._id) {
           localStorage.removeItem(process.env.REACT_APP_LOCALHOST_KEY);
           connectChat();
