@@ -57,8 +57,8 @@ function ChatUserDetails({ currentUser, currentChat }) {
                             </div>
                         </div>) : (
                         <div className="card-body text-center d-flex align-items-center justify-content-center" style={{minHeight: 537 + 'px'}}>
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">Loading...</span>
+                            <div className="spinner-border text-primary" role="status">
+                                <span className="visually-hidden">Loading...</span>
                             </div>
                         </div>)
                 }

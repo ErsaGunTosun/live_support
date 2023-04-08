@@ -58,8 +58,15 @@ function ChatContainer({ currentMessageBox, socket, connectChat }) {
 
   useEffect(() => {
     if (socket.current) {
-      socket.current.on("msg-recieve", (msg) => {
-        setArrivalMessage({ fromSelf: false, message: msg });
+      socket.current.on("msg-recieve", async (data) => {
+        console.log(data)
+        const me = await JSON.parse(
+          localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
+        );
+        if (me._id == data.to)
+          setArrivalMessage({ fromSelf: false, message: data.msg });
+
+
       });
 
       socket.current.on("add-rate", (box) => {

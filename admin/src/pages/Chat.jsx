@@ -76,7 +76,7 @@ function Chat() {
             <div className="row d-flex justify-content-center">
 
               <ChatUsers currentUser={admin} changeChat={handleChatChange} />
-              <ChatContainer />
+              <ChatContainer admin={admin}  socket={socket} currentChat={currentChat} />
               <ChatUserDetails   currentUser={admin} currentChat={currentChat}/>
             </div>
           </div>

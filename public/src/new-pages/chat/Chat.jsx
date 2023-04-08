@@ -45,8 +45,11 @@ function Chat(props) {
     if (currentUser) {
       if (!currentMessageBox) {
         const { data } = await axios.get(`${messageBox}/${currentUser._id}`);
+        console.log(data);
         if (data.status = true && data.box) {
+          console.log("1");
           if (data.user == currentUser._id) {
+            console.log("2");
             setCurrentMessageBox(data.box);
             socket.current.emit("login-box", {
               userId: currentUser._id,

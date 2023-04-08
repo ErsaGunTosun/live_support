@@ -1,4 +1,5 @@
 const MessageBox = require('../models/messageBoxModel');
+const Admin = require('../models/adminModel');
 const User = require('../models/userModel');
 
 module.exports.messageBox = async (req, res, next) => {
@@ -26,7 +27,7 @@ module.exports.messageBox = async (req, res, next) => {
                         const newBox = await MessageBox.create({
                             user: userId,
                             isActive: true,
-                            messages: []
+                            messages: [],
                         })
                             .then(data => {
                                 if (data) {
@@ -38,7 +39,7 @@ module.exports.messageBox = async (req, res, next) => {
                                 }
 
                             })
-                            .catch(err=>{
+                            .catch(err => {
                                 console.log(err);
                                 return res.json({ status: false, user: userId, box: undefined, isNew: undefined });
                             })
@@ -129,4 +130,35 @@ module.exports.addRate = async (box, rate) => {
             console.log(err);
         })
 
+}
+
+
+module.exports.acceptBox = async (req, res, next) => {
+    const { to, admin } = req.body;
+    const adminData = await Admin.find({ _id: admin });
+    console.log("0")
+    if (adminData.length > 0) {
+        console.log("1")
+        const boxData = await MessageBox.find({ _id: to });
+        if (boxData.length > 0) {
+            console.log("2")
+            const box = boxData[0];
+            if (box.isActive) {
+                console.log("3")
+                console.log("admin", adminData[0]._id);
+                MessageBox.findOneAndUpdate({ _id: box._id }, { adminastor: adminData[0]._id, }, {
+                    returnNewDocument: true
+                }
+                )
+                    .then(newbox => {
+                        console.log("new box", newbox);
+                        res.json({ status: true, msg: "Box accepted successfully." });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        res.json({ status: false, msg: "Failed to accept box." });
+                    })
+            }
+        }
+    }
 }

@@ -86,7 +86,7 @@ function ChatUsers({ currentUser, changeChat }) {
                               </h5>
                               <p className="mt-1 mb-0 text-muted font-14">
                                 {/* <span className="w-25 float-end text-end"><span className="badge badge-danger-lighten">3</span></span> */}
-                                <span className="w-75">{data.box.messages[data.box.messages.length - 1].message}</span>
+                                <span className="w-75">{data.box.messages[data.box.messages.length - 1]?.message}</span>
                               </p>
 
                             </div>

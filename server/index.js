@@ -8,7 +8,7 @@ const colors = require('colors/safe');
 const app = express();
 const socket = require("socket.io");
 
-const {addRate} = require('./controllers/messageboxController');
+const { addRate } = require('./controllers/messageboxController');
 
 
 require("dotenv").config();
@@ -39,9 +39,10 @@ const server = app.listen(process.env.PORT, () =>
 );
 const io = socket(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: ['http://localhost:3000', 'http://localhost:3001'],
     credentials: true,
   },
+
 });
 
 // Global Variables
@@ -59,22 +60,44 @@ io.on("connection", (socket) => {
       onlineUsers.set(userId, socket.id)
     }
     messagebox.set(box._id, box);
+    console.log('login')
+  });
+
+  socket.on("add-box-admin", (data) => {
+    const box = messagebox.get(data.to);
+    if (box) {
+      box.adminastor = data.admin;
+      messagebox.set(data.to, box);
+    }
   });
 
   socket.on("send-msg", (data) => {
     const box = messagebox.get(data.to);
     if (box) {
       if (box.user == data.from) {
-        if (box.admin) {
-          const sendAdminSocket = onlineUsers.get(box.admin);
+        if (box.adminastor) {
+          const sendAdminSocket = onlineUsers.get(box.adminastor);
           if (sendAdminSocket) {
-            socket.to(sendAdminSocket).emit("msg-recieve", data.msg);
+            console.log("2");
+            let sendData = {
+              msg: data.msg,
+              to: box.adminastor,
+            }
+            console.log("admin",sendData)
+            io.sockets.emit("msg-recieve", sendData);
           }
         }
       } else {
+        
         const sendUserSocket = onlineUsers.get(box.user);
         if (sendUserSocket) {
-          socket.to(sendUserSocket).emit("msg-recieve", data.msg);
+          console.log("3");
+          let sendData = {
+            msg: data.msg,
+            to: box.user,
+          }
+          console.log("user",sendData)
+          io.sockets.emit("msg-recieve", sendData)
         }
 
       }
