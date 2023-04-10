@@ -88,7 +88,7 @@ function Chat(props) {
       {/* Chat Body */}
       {
         isCloseTab
-          ? <RateContainer currentMessageBox={currentMessageBox} socket={socket} changeCloseTabVisible={openCloseTab} />
+          ? <RateContainer currentMessageBox={currentMessageBox} socket={socket} changeCloseTabVisible={openCloseTab} connectChat={props.connectChat} />
           : <ChatContainer currentMessageBox={currentMessageBox} socket={socket} connectChat={props.connectChat} />
       }
 

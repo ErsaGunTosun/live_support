@@ -9,3 +9,4 @@ export const sendMessageBoxRoute = `${host}/api/messages/box/addmsg`;
 export const recieveMessageRoute = `${host}/api/messages/getmsg`;
 export const recieveMessageBoxRoute = `${host}/api/messages/box/getmsg`;
 export const setAvatarRoute = `${host}/api/auth/setavatar`;
+export const sendRateRoute = `${host}/api/messages/box/rate`;

@@ -8,8 +8,6 @@ const colors = require('colors/safe');
 const app = express();
 const socket = require("socket.io");
 
-const { addRate } = require('./controllers/messageboxController');
-
 
 require("dotenv").config();
 
@@ -84,12 +82,12 @@ io.on("connection", (socket) => {
               time: data.time,
               to: box.adminastor,
             }
-            console.log("admin",sendData)
+            console.log("admin", sendData)
             io.sockets.emit("msg-recieve", sendData);
           }
         }
       } else {
-        
+
         const sendUserSocket = onlineUsers.get(box.user);
         if (sendUserSocket) {
           console.log("3");
@@ -98,7 +96,7 @@ io.on("connection", (socket) => {
             time: data.time,
             to: box.user,
           }
-          console.log("user",sendData)
+          console.log("user", sendData)
           io.sockets.emit("msg-recieve", sendData)
         }
 
@@ -106,15 +104,9 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("send-rate", (data) => {
+  socket.on("add-rate", (data) => {
     const { from, to, rate } = data;
-    const box = messagebox.get(to);
-    if (box) {
-      if (box.user == from && rate) {
-        addRate(box, rate);
-        socket.emit("add-rate", box);
-      }
-    }
+    // send rate to admin
 
   })
 

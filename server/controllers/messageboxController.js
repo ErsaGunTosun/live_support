@@ -58,7 +58,7 @@ module.exports.messageBox = async (req, res, next) => {
 
 module.exports.addMessageToBox = async (req, res, next) => {
     try {
-        const { from, to, message,time } = req.body;
+        const { from, to, message, time } = req.body;
 
         let messageBox = await MessageBox.find({ _id: to })
             .then(async (rstl) => {
@@ -122,16 +122,17 @@ module.exports.getMessagesToBox = async (req, res, next) => {
     }
 }
 
-module.exports.addRate = async (box, rate) => {
-
-    MessageBox.findOneAndUpdate({ _id: box._id }, { rate: rate, isActive: false })
+module.exports.addRate = async (req, res, next) => {
+    const { to, from, rate } = req.body;
+    MessageBox.findOneAndUpdate({ _id: to }, { rate: rate.toString(), isActive: false }, { returnNewDocument: true })
         .then(newbox => {
             console.log("new box rate", newbox);
+            res.json({ status: true, msg: "Box rated successfully.", box: newbox });
         })
         .catch(err => {
             console.log(err);
+            res.json({ status: false, msg: "Failed to rate box." });
         })
-
 }
 
 

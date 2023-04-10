@@ -1,16 +1,19 @@
 import { React, useEffect, useState } from 'react'
+import axios from "axios";
+
+import { sendRateRoute } from '../utils/APIRoutes'
 
 // Styles
-import  '../styles/chat/main.css'
+import '../styles/chat/main.css'
 
-function RateContainer({ currentMessageBox, socket,changeCloseTabVisible }) {
+function RateContainer({ currentMessageBox, socket, changeCloseTabVisible,connectChat }) {
     const [rate, setRate] = useState(0);
     const [isError, setIsError] = useState(false);
 
     const handleRate = (e) => {
         setRate(e.target.value);
     }
-    const handleRateSubmit = async() => {
+    const handleRateSubmit = async () => {
         if (rate == 0) {
             setIsError(true)
             return;
@@ -18,12 +21,23 @@ function RateContainer({ currentMessageBox, socket,changeCloseTabVisible }) {
         const data = await JSON.parse(
             localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
         );
-        socket.current.emit("send-rate", {
+        const rslt = await axios.post(sendRateRoute, {
             to: currentMessageBox._id,
             from: data._id,
-            rate:rate,
-        });
-        changeCloseTabVisible();
+            rate: rate,
+        })
+        console.log("rslt", rslt);
+        if (rslt.data.status) {
+            socket.emit("add-rate", {
+                to: currentMessageBox._id,
+                from: data._id,
+                rate: rate,
+            })
+            localStorage.removeItem(process.env.REACT_APP_LOCALHOST_KEY);
+            connectChat();
+        }
+
+
     }
     return (
         <div className='chat-container d-flex justify-content-center align-items-center'>
