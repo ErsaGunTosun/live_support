@@ -52,7 +52,7 @@ function Chat() {
       <div className="content-page m-0 py-0 px-0">
         <div className="content ">
           <Navbar admin={admin} />
-          <PagesBar />
+          <PagesBar activePage={"Chat"} pages={[{name:"Chat", url:"/chat",icon:"comments"}]} page={"Chat"} />
 
           <div className="container-fluid ">
 
@@ -75,8 +75,8 @@ function Chat() {
             <div className="row d-flex justify-content-center">
 
               <ChatUsers currentUser={admin} changeChat={handleChatChange} />
-              <ChatContainer admin={admin}  socket={socket} currentChat={currentChat} />
-              <ChatUserDetails   currentUser={admin} currentChat={currentChat}/>
+              <ChatContainer admin={admin} socket={socket} currentChat={currentChat} />
+              <ChatUserDetails currentUser={admin} currentChat={currentChat} />
             </div>
           </div>
 

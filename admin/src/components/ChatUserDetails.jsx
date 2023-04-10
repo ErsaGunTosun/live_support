@@ -10,7 +10,7 @@ function ChatUserDetails({ currentUser, currentChat }) {
 
                             <div className="mt-3 text-center">
                                 <h4>{currentChat.user.name.toUpperCase()}</h4>
-                                <p className="text-muted mt-2 font-14">Last Interacted: <strong>Few hours back</strong></p>
+                                <button className='btn btn-primary text center fw-bold'>More Data</button>
                             </div>
 
                             <div className="mt-3">

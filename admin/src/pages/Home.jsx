@@ -28,7 +28,7 @@ function Home() {
       <div className="content-page m-0 p-0 h-100">
         <div className="content">
           <Navbar admin={admin} />
-          <PagesBar />
+          <PagesBar activePage={"Home"} pages={[{name:"Chat", url:"/chat",icon:"comments"}]} page={"Home"} />
 
           <div className="container-fluid">
             <div className="row">

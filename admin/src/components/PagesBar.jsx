@@ -1,18 +1,34 @@
 import React from 'react'
 
-function PagesBar() {
-    return (
-        <div className="topnav shadow-sm">
-            <div className="container-fluid">
-                <nav className="navbar navbar-light navbar-expand-lg topnav-menu">
-                    <div className="collapse navbar-collapse d-flex justify-content-start" id="topnav-menu-content">
-                        <ul className="navbar-nav">
-                            <li className="nav-item dropdown">
-                                <a href="/chat" className="dropdown-item my-1 fs-4 fw-bold">
-                                    <i className="fa-sharp fa-solid fa-comments"></i> Chat
-                                </a>
-                            </li>
-                            {/* <li className="nav-item dropdown">
+function PagesBar({ pages, activePage, page }) {
+  return (
+    <div className="topnav shadow-sm">
+      <div className="container-fluid">
+        <nav className="navbar navbar-light navbar-expand-lg topnav-menu">
+          <div className="collapse navbar-collapse d-flex justify-content-start" id="topnav-menu-content">
+            <ul className="navbar-nav">
+              {
+                page == activePage & page != "Home" ?
+                  <li className="nav-item dropdown">
+                    <a href={`/`} className="dropdown-item my-1 fs-4 fw-bold">
+                      <i className="fa-house fa-solid fa-comments"></i> Home
+                    </a>
+                  </li> : null
+              }
+
+              {
+                pages.map((page, index) => {
+                  if (page.name != activePage) {
+                    return (<li className="nav-item dropdown">
+                      <a href={`${page.url}`} className="dropdown-item my-1 fs-4 fw-bold">
+                        <i className={`fa-sharp fa-solid fa-${page.icon}`}></i> {page.name}
+                      </a>
+                    </li>)
+                  }
+                })
+              }
+
+              {/* <li className="nav-item dropdown">
               <a className="nav-link dropdown-toggle arrow-none" href="#" id="topnav-dashboards" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i className="uil-dashboard me-1"></i>Dashboards <div className="arrow-down"></div>
               </a>
@@ -267,13 +283,13 @@ function PagesBar() {
               </div>
             </li>
               */}
-                        </ul>
+            </ul>
 
-                    </div>
-                </nav>
-            </div>
-        </div>
-    )
+          </div>
+        </nav>
+      </div>
+    </div>
+  )
 }
 
 export default PagesBar
