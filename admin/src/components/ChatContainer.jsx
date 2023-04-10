@@ -48,16 +48,18 @@ function ChatContainer({ currentChat, socket }) {
         socket.emit("send-msg", {
             to: currentChat.box.details[0]._id,
             from: data._id,
+            time: new Date().toLocaleTimeString(),
             msg,
         });
         await axios.post(sendMessageBoxRoute, {
             from: data._id,
             to: currentChat.box.details[0]._id,
+            time: new Date().toLocaleTimeString(),
             message: msg,
         });
 
         const msgs = [...messages];
-        msgs.push({ fromSelf: true, message: msg });
+        msgs.push({ fromSelf: true, message: msg,time: new Date().toLocaleTimeString() });
         setMessages(msgs);
     };
 
@@ -79,18 +81,30 @@ function ChatContainer({ currentChat, socket }) {
     }
 
     useEffect(() => {
-
+        const readStorage = async () => {
+            if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+                navigate("/login");
+            } else {
+                setAdmin(
+                    await JSON.parse(
+                        localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
+                    )
+                );
+            }
+        }
+        readStorage();
         if (socket) {
             socket.on("msg-recieve", (rMsg) => {
                 let data = JSON.parse(
                     localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
                 )
                 if (data._id == rMsg.to) {
-                    setArrivalMessage({ fromSelf: false, message: rMsg.msg });
+                    setArrivalMessage({ fromSelf: false, message: rMsg.msg, time: rMsg.time });
                 }
 
             });
         }
+
     }, []);
 
 
@@ -118,12 +132,12 @@ function ChatContainer({ currentChat, socket }) {
                                                 return (
                                                     <li className={message.fromSelf ? "clearfix odd" : "clearfix "} key={index}>
                                                         <div className="chat-avatar">
-                                                            <img src={require('../assets/pp/default.png')} className="rounded" alt="Shreyu N" />
-                                                            <i>10:00</i> {/** DB add message time data */}
+                                                            <img src={ !message.fromSelf ? require('../assets/pp/default.png') : require(`../assets/pp${admin?.profil_pic}`)} className="rounded" alt="Shreyu N" />
+                                                            <i>{message.time.split(":")[0] + ":" + message.time.split(":")[1]}</i>
                                                         </div>
                                                         <div className="conversation-text">
                                                             <div className="ctext-wrap">
-                                                                <i>{currentChat.user.name.toUpperCase()}</i>
+                                                                <i>{!message.fromSelf ? currentChat.user.name.toUpperCase(): admin.name.toUpperCase()}</i>
                                                                 <p>
                                                                     {message.message}
                                                                 </p>

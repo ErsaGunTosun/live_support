@@ -44,15 +44,17 @@ function ChatContainer({ currentMessageBox, socket, connectChat }) {
       to: currentMessageBox._id,
       from: data._id,
       msg,
+      time: new Date().toLocaleTimeString(),
     });
     await axios.post(sendMessageBoxRoute, {
       from: data._id,
       to: currentMessageBox._id,
       message: msg,
+      time: new Date().toLocaleTimeString(),
     });
 
     const msgs = [...messages];
-    msgs.push({ fromSelf: true, message: msg });
+    msgs.push({ fromSelf: true, message: msg, time: new Date().toLocaleTimeString() });
     setMessages(msgs);
   };
 
@@ -64,7 +66,7 @@ function ChatContainer({ currentMessageBox, socket, connectChat }) {
           localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
         );
         if (me._id == data.to)
-          setArrivalMessage({ fromSelf: false, message: data.msg });
+          setArrivalMessage({ fromSelf: false, message: data.msg, time: data.time });
 
 
       });
@@ -105,6 +107,7 @@ function ChatContainer({ currentMessageBox, socket, connectChat }) {
                       >
                         <div className="content">
                           <p className="my-0">{message.message}</p>
+                          <p className="my-0 fs-6">{message.time.split(":")[0] + ":" + message.time.split(":")[1]}</p>
                         </div>
                       </div>
                     </div>

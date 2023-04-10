@@ -81,6 +81,7 @@ io.on("connection", (socket) => {
             console.log("2");
             let sendData = {
               msg: data.msg,
+              time: data.time,
               to: box.adminastor,
             }
             console.log("admin",sendData)
@@ -94,6 +95,7 @@ io.on("connection", (socket) => {
           console.log("3");
           let sendData = {
             msg: data.msg,
+            time: data.time,
             to: box.user,
           }
           console.log("user",sendData)

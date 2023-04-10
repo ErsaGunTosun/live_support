@@ -58,7 +58,7 @@ module.exports.messageBox = async (req, res, next) => {
 
 module.exports.addMessageToBox = async (req, res, next) => {
     try {
-        const { from, to, message } = req.body;
+        const { from, to, message,time } = req.body;
 
         let messageBox = await MessageBox.find({ _id: to })
             .then(async (rstl) => {
@@ -67,6 +67,7 @@ module.exports.addMessageToBox = async (req, res, next) => {
                     if (box.isActive) {
                         let msg = {
                             sender: from,
+                            time: time,
                             message: { text: message }
                         }
                         box.messages.push(msg);
@@ -111,6 +112,7 @@ module.exports.getMessagesToBox = async (req, res, next) => {
                 return {
                     fromSelf: msg.sender.toString() === from,
                     message: msg.message.text,
+                    time: msg.time
                 };
             });
             res.json(projectedMessages);
