@@ -58,6 +58,7 @@ io.on("connection", (socket) => {
       onlineUsers.set(userId, socket.id)
     }
     messagebox.set(box._id, box);
+    io.sockets.emit("user-login-box",({userId, box}));
     console.log('login')
   });
 

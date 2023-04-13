@@ -9,22 +9,9 @@ import { allUsersRoute } from "../utils/APIRoutes";
 import '../styles/chat/users.css';
 
 
-function ChatUsers({ currentUser, changeChat }) {
-  const [users, setUsers] = useState([]);
+function ChatUsers({ currentUser, changeChat, socket,users }) {
   const [currentSelected, setCurrentSelected] = useState(undefined);
-
-
-  useEffect(() => {
-    async function getData() {
-      if (currentUser) {
-        console.log("req")
-        const data = await axios.get(`${allUsersRoute}/${currentUser._id}`);
-        setUsers(data.data.users);
-      }
-    }
-    getData();
-  }, [currentUser]);
-
+  
   const changeCurrentChat = (index, contact) => {
     setCurrentSelected(index);
     changeChat(contact);

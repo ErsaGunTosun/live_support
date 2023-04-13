@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { io } from "socket.io-client";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import { allUsersRoute, host } from "../utils/APIRoutes";
 
@@ -20,6 +21,7 @@ function Chat() {
   const navigate = useNavigate();
   const [admin, setAdmin] = useState(undefined);
   const [currentChat, setCurrentChat] = useState(undefined);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const readStorage = async () => {
@@ -35,11 +37,20 @@ function Chat() {
     }
     readStorage();
 
+    socket.on("user-login-box", async ({ userId, box }) => {
+      const { data } = await axios.get(`${allUsersRoute}/${admin?._id}`);
+      setUsers(data.users);
+    })
   }, []);
 
   useEffect(() => {
+    const getData = async () => {
+      const { data } = await axios.get(`${allUsersRoute}/${admin?._id}`);
+      setUsers(data.users);
+    }
     if (admin) {
       socket.emit("add-user", admin._id);
+      getData();
     }
   }, [admin]);
 
@@ -52,7 +63,7 @@ function Chat() {
       <div className="content-page m-0 py-0 px-0">
         <div className="content ">
           <Navbar admin={admin} />
-          <PagesBar activePage={"Chat"} pages={[{name:"Chat", url:"/chat",icon:"comments"}]} page={"Chat"} />
+          <PagesBar activePage={"Chat"} pages={[{ name: "Chat", url: "/chat", icon: "comments" }]} page={"Chat"} />
 
           <div className="container-fluid ">
 
@@ -74,7 +85,7 @@ function Chat() {
 
             <div className="row d-flex justify-content-center">
 
-              <ChatUsers currentUser={admin} changeChat={handleChatChange} />
+              <ChatUsers currentUser={admin} users={users} changeChat={handleChatChange} socket={socket} />
               <ChatContainer admin={admin} socket={socket} currentChat={currentChat} />
               <ChatUserDetails currentUser={admin} currentChat={currentChat} />
             </div>
