@@ -1,3 +1,21 @@
 .chat-container {
     overflow: scroll !important;
 }
+
+.messages-container {
+    overflow-y: scroll !important;
+}
+
+.messages-container::-webkit-scrollbar {
+    width: 10px;
+}
+
+.messages-container::-webkit-scrollbar-track {
+    background-color: rgba(25, 147, 147, 0.1);
+}
+
+.messages-container::-webkit-scrollbar-thumb {
+    /* background: #8888889a; */
+    background-color: rgba(25, 147, 147, 0.4);
+    border-radius: 5px;
+}
