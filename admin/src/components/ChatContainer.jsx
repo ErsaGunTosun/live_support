@@ -2,11 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import SimpleBar from 'simplebar-react';
 import axios from 'axios';
-import { sendMessageBoxRoute, recieveMessageBoxRoute, acceptBoxRoute } from "../utils/APIRoutes";
+import { sendMessageBoxRoute, recieveMessageBoxRoute, acceptBoxRoute,userRoute } from "../utils/APIRoutes";
 
 import ChatInput from './ChatInput';
 
-function ChatContainer({ currentChat, socket }) {
+function ChatContainer({ currentChat, socket, setCurrentChat }) {
     const ref = useRef();
     const navigate = useNavigate();
     const [msg, setMsg] = useState("");
@@ -68,11 +68,14 @@ function ChatContainer({ currentChat, socket }) {
             localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
         );
 
-        const { result } = await axios.post(acceptBoxRoute, {
+        const result = await axios.post(acceptBoxRoute, {
             admin: data._id,
             to: currentChat.box.details[0]._id,
         });
-        if (result.status) {
+
+        if (result.data.status) {
+            const { data } = await axios.get(`${userRoute}/${admin?._id}/${currentChat.user._id}`);
+            setCurrentChat(data.users[0])
             socket.emit("add-box-admin", {
                 to: currentChat.box.details[0]._id,
                 admin: data._id,
@@ -113,9 +116,6 @@ function ChatContainer({ currentChat, socket }) {
     }, [arrivalMessage]);
 
     useEffect(() => {
-        // ref.current?.recalculate();
-        // ref.current?.getScrollElement().scrollIntoView({ behavior: "smooth" });
-        // console.log(ref.current?.getScrollElement())
         ref.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
 
@@ -125,40 +125,7 @@ function ChatContainer({ currentChat, socket }) {
             {
                 currentChat ?
                     currentChat.box.details[0].adminastor ?
-                        // <ul className='conversation-list'>
-                        //     <SimpleBar ref={ref} style={{ minHeight: 500 + 'px', maxHeight: 537 + 'px' }} className="row" >
-                        //         {
-                        //             currentChat && messages.map((message, index) => {
-                        //                 return (
-                        //                     <li className={message.fromSelf ? "clearfix odd" : "clearfix "} key={index}>
-                        //                         <div className="chat-avatar">
-                        //                             <img src={!message.fromSelf ? require('../assets/pp/default.png') : require(`../assets/pp${admin?.profil_pic}`)} className="rounded" alt="Shreyu N" />
-                        //                             <i>{message.time.split(":")[0] + ":" + message.time.split(":")[1]}</i>
-                        //                         </div>
-                        //                         <div className="conversation-text">
-                        //                             <div className="ctext-wrap">
-                        //                                 <i>{!message.fromSelf ? currentChat.user.name.toUpperCase() : admin.name.toUpperCase()}</i>
-                        //                                 <p>
-                        //                                     {message.message}
-                        //                                 </p>
-                        //                             </div>
-                        //                         </div>
-                        //                         <div className="conversation-actions dropdown">
-                        //                             <button className="btn btn-sm btn-link" data-bs-toggle="dropdown"
-                        //                                 aria-expanded="false"><i className='uil uil-ellipsis-v'></i></button>
-
-                        //                             <div className="dropdown-menu dropdown-menu-end">
-                        //                                 <a className="dropdown-item" href="#">Copy Message</a>
-                        //                             </div>
-                        //                         </div>
-                        //                     </li>
-                        //                 )
-                        //             })
-
-                        //         }
-                        //     </SimpleBar>
-                        // </ul>
-                        <div className="row conversation-list messages-container"  style={{ height: 530 + 'px', overflowY: "scroll" }}>
+                        <div className="row conversation-list messages-container" style={{ height: 530 + 'px', overflowY: "scroll" }}>
 
                             {
                                 currentChat && messages.map((message, index) => {
@@ -176,7 +143,7 @@ function ChatContainer({ currentChat, socket }) {
                                                     </p>
                                                 </div>
                                             </div>
-                                            <div className="conversation-actions dropdown" style={{float: `${message.fromSelf ? "left" : "right"}`}}>
+                                            <div className="conversation-actions dropdown" style={{ float: `${message.fromSelf ? "left" : "right"}` }}>
                                                 <button className="btn btn-sm btn-link" data-bs-toggle="dropdown"
                                                     aria-expanded="false"><i className='uil uil-ellipsis-v'></i></button>
 
@@ -192,28 +159,28 @@ function ChatContainer({ currentChat, socket }) {
 
                         </div  >
 
-            :
-            <div style={{ minHeight: 500 + 'px' }} className='d-flex justify-content-center align-items-center'>
-                <div className='w-100 text-center'>
-                    <p className='w-100 fs-3 fw-bold fst-italic text-primary d-block'>No admin is looking at this ticket</p>
-                    <p className='w-100 d-block d-flex justify-content-center'>
-                        <button className='d-block btn btn-success' onClick={acceptBox}>Accept help request</button>
-                    </p>
-                </div>
+                        :
+                        <div style={{ minHeight: 500 + 'px' }} className='d-flex justify-content-center align-items-center'>
+                            <div className='w-100 text-center'>
+                                <p className='w-100 fs-3 fw-bold fst-italic text-primary d-block'>No admin is looking at this ticket</p>
+                                <p className='w-100 d-block d-flex justify-content-center'>
+                                    <button className='d-block btn btn-success' onClick={acceptBox}>Accept help request</button>
+                                </p>
+                            </div>
 
 
-            </div>
-            :
-            <div style={{ minHeight: 500 + 'px' }} className='d-flex justify-content-center align-items-center'>
-                <div className='w-100 text-center'>
-                    <p className='w-100 fs-3 fw-bold fsts-italic text-primary d-block'>There is no selected chat</p>
-                    <div className="spinner-border text-primary" role="status">
-                        <span className="visually-hidden">Loading...</span>
+                        </div>
+                    :
+                    <div style={{ minHeight: 500 + 'px' }} className='d-flex justify-content-center align-items-center'>
+                        <div className='w-100 text-center'>
+                            <p className='w-100 fs-3 fw-bold fsts-italic text-primary d-block'>There is no selected chat</p>
+                            <div className="spinner-border text-primary" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+
+
                     </div>
-                </div>
-
-
-            </div>
             }
 
 

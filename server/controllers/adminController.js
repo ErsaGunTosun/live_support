@@ -74,8 +74,8 @@ module.exports.getAllUsers = async (req, res, next) => {
                 const users = await User.find();
 
                 for (let i = 0; i < users.length; i++) {
-                    const box = await MessageBox.find({ user: users[i]._id,isActive:true });
-                    if(box.length > 0){
+                    const box = await MessageBox.find({ user: users[i]._id, isActive: true });
+                    if (box.length > 0) {
                         const projectedMessages = box[0].messages.map((msg) => {
                             return {
                                 fromSelf: msg.sender.toString() === users[i]._id.toString(),
@@ -93,8 +93,8 @@ module.exports.getAllUsers = async (req, res, next) => {
                     }
 
                 };
-       
-            
+
+
                 return res.status(200).json({ status: true, users: resultData });
 
             }
@@ -105,3 +105,48 @@ module.exports.getAllUsers = async (req, res, next) => {
         next(ex);
     }
 };
+
+module.exports.getUser = async (req, res, next) => {
+    try {
+        const admminId = req.params.id;
+        const userId = req.params.userId;
+        if (admminId) {
+            const Check = await Admin.find({ _id: admminId });
+            if (Check.length == 0) {
+                return res.status(200).json({ status: false, message: "Admin not found" });
+            } else {
+                let resultData = [];
+                const user = await User.find({ _id: userId });
+
+                if (user.length > 0) {
+
+                    const box = await MessageBox.find({ user: user[0]._id, isActive: true });
+                    if (box.length > 0) {
+                        const projectedMessages = box[0].messages.map((msg) => {
+                            return {
+                                fromSelf: msg.sender.toString() === user[0]._id.toString(),
+                                message: msg.message.text,
+                            };
+                        });
+                        let data = {
+                            user: user[0],
+                            box: {
+                                messages: projectedMessages,
+                                details: box,
+                            },
+                        };
+                        resultData.push(data);
+                        return res.status(200).json({ status: true, users: resultData });
+
+                    }
+
+                }
+            }
+        }
+
+
+    } catch (ex) {
+        next(ex);
+    }
+};
+

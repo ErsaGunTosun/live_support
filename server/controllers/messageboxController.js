@@ -155,11 +155,11 @@ module.exports.acceptBox = async (req, res, next) => {
                 )
                     .then(newbox => {
                         console.log("new box", newbox);
-                        res.json({ status: true, msg: "Box accepted successfully." });
+                        res.json({ status: true, msg: "Box accepted successfully.", box: newbox });
                     })
                     .catch(err => {
                         console.log(err);
-                        res.json({ status: false, msg: "Failed to accept box." });
+                        res.json({ status: false, msg: "Failed to accept box." ,box:undefined});
                     })
             }
         }

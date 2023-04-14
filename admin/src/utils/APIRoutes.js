@@ -14,3 +14,4 @@ export const acceptBoxRoute = `${host}/api/messages/box/accept`;
 //Admin
 export const loginRoute = `${host}/api/admin/auth/login`;
 export const allUsersRoute = `${host}/api/admin/auth/allusers`;
+export const userRoute = `${host}/api/admin/auth/user`;

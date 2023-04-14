@@ -38,8 +38,11 @@ function Chat() {
     readStorage();
 
     socket.on("user-login-box", async ({ userId, box }) => {
-      const { data } = await axios.get(`${allUsersRoute}/${admin?._id}`);
-      setUsers(data.users);
+      setAdmin(JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)));
+      if (admin) {
+        const { data } = await axios.get(`${allUsersRoute}/${admin?._id}`);
+        setUsers(data.users);
+      }
     })
   }, []);
 
@@ -88,7 +91,7 @@ function Chat() {
               <ChatUsers currentUser={admin} users={users} changeChat={handleChatChange} socket={socket} />
               <div className="col-xxl-10 col-xl-12 order-xl-3">
                 <div className="card">
-                  <ChatContainer admin={admin} socket={socket} currentChat={currentChat} />
+                  <ChatContainer admin={admin} socket={socket} currentChat={currentChat} setCurrentChat={setCurrentChat} />
                 </div>
               </div >
               <ChatUserDetails currentUser={admin} currentChat={currentChat} />
