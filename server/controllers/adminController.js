@@ -3,7 +3,6 @@ const User = require("../models/userModel");
 const MessageBox = require('../models/messageBoxModel');
 const bcrypt = require("bcrypt");
 
-
 module.exports.login = async (req, res) => {
     const { email, password, isRemember } = req.body;
     if (email && password) {
@@ -150,3 +149,58 @@ module.exports.getUser = async (req, res, next) => {
     }
 };
 
+module.exports.checkuser = async (req, res, next) => {
+    try {
+        const { id, userID } = req.params;
+        if (id && userID) {
+
+            const Check = await Admin.find({ _id: id });
+            if (Check.length == 0) {
+                return res.status(404).json({ status: false, message: "Admin not found" });
+            } else {
+                const currentUser = await User.find({ _id: userID });
+                if (currentUser.length > 0) {
+                    let userEmail = currentUser[0].email;
+                    let userIP = currentUser[0].ip;
+                    let isFindEmail = false;
+                    let isFindIP = false;
+                    const Users = await User.find();
+                    for (const user of Users) {
+                        if (user.phone_number == currentUser[0].phone_number) {
+                            continue;
+                        }
+                        
+                        if (user.email == userEmail) {
+                            isFindEmail = true;
+                        }
+                        if (user.ip == userIP) {
+                            isFindIP = true;
+                        }
+
+                        user.emails.map((email) => {
+                            if (email == userEmail) {
+                                isFindEmail = true;
+                            }
+                        });
+
+                        user.ip_list.map((ip) => {
+                            if (ip == userIP) {
+                                isFindIP = true;
+                            }
+                        });
+                    }
+
+                    res.status(200).json({ status: true, isFindEmail: isFindEmail, isFindIP: isFindIP });
+
+                } else {
+                    return res.status(404).json({ status: false, message: "User not found" });
+                }
+            }
+        } else {
+            res.status(404);
+        }
+    }
+    catch (ex) {
+        next(ex);
+    }
+}
