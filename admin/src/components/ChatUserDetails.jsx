@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { checkUserRoute } from '../utils/APIRoutes'
+import { checkUserRoute, getBoxsRoute } from '../utils/APIRoutes'
+
+import UserDetailsModal from './UserDetailsModal'
 
 function ChatUserDetails({ currentUser, currentChat }) {
     const [emailChecked, setEmailChecked] = useState(false)
     const [ipChecked, setIpChecked] = useState(false)
+    const [boxs, setBoxs] = useState([]);
+    const [modalShow, setModalShow] = useState(false);
+
+    const handleShow = () => setModalShow(!modalShow);
+
     useEffect(() => {
         const getData = async () => {
             const admin = JSON.parse(
@@ -15,19 +22,33 @@ function ChatUserDetails({ currentUser, currentChat }) {
             setIpChecked(data.isFindIP);
         }
         getData()
+
+        const getBoxs = async () => {
+            const admin = JSON.parse(
+                localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
+            );
+            console.log("admin", admin);
+            const {data} = await axios.get(`${getBoxsRoute}/${admin._id}/${currentChat.user._id}`);
+           setBoxs(data.boxs);
+        }
+        getBoxs();
+
     }, [currentChat])
+
     return (
         <div className="col-xxl-6 col-xl-6 order-xl-1 order-xxl-2">
             <div className="card">
                 {
                     currentChat ? (
+
                         <div className="card-body">
 
                             <div className="mt-3 text-center">
                                 <h4>{currentChat.user.name.toUpperCase()}</h4>
-                                <button className='btn btn-primary text center fw-bold'>More Data</button>
+                                <button onClick={handleShow} className='btn btn-primary text center fw-bold'>More Data</button>
+                                <UserDetailsModal show={modalShow} handleShow={handleShow} currentChat={currentChat} boxs={boxs} ipChecked={ipChecked} emailChecked={emailChecked} />
                                 <div className='fs-4 mt-2 mb-0 text-start text-danger'>
-                                    
+
                                     {
                                         ipChecked ? <i className="fa-solid fa-location-dot"></i> : ""
                                     }
@@ -42,7 +63,7 @@ function ChatUserDetails({ currentUser, currentChat }) {
                             <div className="mt-2">
                                 <hr className="" />
 
-                                <p className="mt-4 mb-1"><strong><i className='uil uil-at'></i> Email:</strong></p>
+                                <p className="mt-2 mb-1"><strong><i className='uil uil-at'></i> Email:</strong></p>
                                 <p>{currentChat.user.email}</p>
 
                                 <p className="mt-3 mb-1"><strong><i className='uil uil-phone'></i> Phone Number:</strong></p>

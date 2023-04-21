@@ -159,9 +159,40 @@ module.exports.acceptBox = async (req, res, next) => {
                     })
                     .catch(err => {
                         console.log(err);
-                        res.json({ status: false, msg: "Failed to accept box." ,box:undefined});
+                        res.json({ status: false, msg: "Failed to accept box.", box: undefined });
                     })
             }
         }
     }
+}
+
+module.exports.getBoxs = async (req, res, next) => {
+    try {
+        const { id, userID } = req.params;
+        const admin = await Admin.find({ _id: id });
+
+        if (admin.length > 0) {
+
+            const currentUser = await User.find({ _id: userID });
+            if (currentUser.length > 0) {
+
+                const boxs = await MessageBox.find({ user: userID });
+                if (boxs.length > 0) {
+
+                    res.status(200).json({ status: true, boxs: boxs });
+                }
+                else {
+                    res.status(200).json({ status: true, boxs: [] });
+                }
+            }
+        }
+        else {
+            res.status(404);
+        }
+
+    }
+    catch (ex) {
+
+    }
+
 }
