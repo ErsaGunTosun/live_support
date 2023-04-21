@@ -67,7 +67,7 @@ module.exports.getAllUsers = async (req, res, next) => {
         if (admminId) {
             const Check = await Admin.find({ _id: admminId });
             if (Check.length == 0) {
-                return res.status(200).json({ status: false, message: "Admin not found" });
+                return res.status(404).json({ status: false, message: "Admin not found" });
             } else {
                 let resultData = [];
                 const users = await User.find();

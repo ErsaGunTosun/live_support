@@ -12,6 +12,7 @@ export const sendMessageBoxRoute = `${host}/api/messages/box/addmsg`;
 export const recieveMessageBoxRoute = `${host}/api/messages/box/getmsg`;
 export const acceptBoxRoute = `${host}/api/messages/box/accept`;
 export const getBoxsRoute = `${host}/api/messages/boxs`;
+export const getFinishBoxsRoute = `${host}/api/messages/box/finish`;
 
 //Admin
 export const loginRoute = `${host}/api/admin/auth/login`;

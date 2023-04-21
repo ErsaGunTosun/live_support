@@ -196,3 +196,43 @@ module.exports.getBoxs = async (req, res, next) => {
     }
 
 }
+
+
+module.exports.getFinishBox = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+
+        const admin = await Admin.find({ _id: id });
+        const users = await User.find();
+        console.log("sa")
+        if (admin.length > 0) {
+            let results = [];
+            let box = {};
+            const boxs = await MessageBox.find({ adminastor: id });
+            if (boxs.length > 0) {
+                for (let i = 0; i < boxs.length; i++) {
+                    box.box = boxs[i];
+                    users.map(item => {
+                        if (item._id.toString() === boxs[i].user.toString()) {
+                            box.user = item;
+                        }
+                    })
+                    results.push(box);
+                }
+                res.status(200).json({ status: true, boxs: results });
+            }
+            else {
+                res.status(200).json({ status: true, boxs: [] });
+            }
+
+
+        } else {
+            res.status(404);
+        }
+    }
+    catch (ex) {
+        next(ex);
+    }
+
+
+}

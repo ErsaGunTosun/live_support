@@ -1,11 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect} from 'react'
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-
-import axios from "axios";
-
-import { getBoxsRoute } from "../utils/APIRoutes";
-
 function UserDetailsModal({ show, handleShow, currentChat, boxs, ipChecked, emailChecked }) {
     useEffect(() => {
         console.log(boxs);
@@ -83,7 +78,6 @@ function UserDetailsModal({ show, handleShow, currentChat, boxs, ipChecked, emai
 
                 <div className="mt-2">
                     <hr className="" />
-
                     {
                         boxs.map((elem, index) => {
                             if (!elem.isActive) {
